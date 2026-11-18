@@ -1,0 +1,15 @@
+# Sobe o backend em container (o app mobile roda com o Expo na máquina).
+# Uso: docker compose up --build
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      URBANRISK_SALT: "troque-este-salt"
+    volumes:
+      - urbanrisk-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  urbanrisk-data:
