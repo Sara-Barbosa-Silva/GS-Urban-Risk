@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import com.fiap.ec.urbanrisk.model.TipoSensor;
 
 /**
- * Severidade pela razão entre a leitura e o limite de alerta do sensor:
- * 0,8x do limite = 0 e 2x do limite (ou mais) = 1, de forma linear.
+ * Severidade (0 a 1) pela distância entre a leitura e o limite de alerta do sensor:
+ * - chuva e falta de energia: 0,8x do limite = 0 e 2x do limite = 1;
+ * - nível do rio: 0,9x do limite = 0 e 1,4x do limite = 1 (poucos centímetros já fazem diferença);
+ * - temperatura: 2 °C abaixo do limite = 0 e 6 °C acima do limite = 1.
  */
 @Component
 public class EstimadorRiscoPadrao implements EstimadorRisco {
@@ -20,7 +22,12 @@ public class EstimadorRiscoPadrao implements EstimadorRisco {
     @Override
     public Estimativa estimar(TipoSensor tipo, double valor, double limite, double mediaRecente) {
         double razao = limite > 0 ? valor / limite : 0;
-        double severidade = limitar((razao - RAZAO_INICIO) / (RAZAO_MAXIMA - RAZAO_INICIO));
+        double severidade = switch (tipo) {
+            case PLUVIOMETRO, REDE_ELETRICA -> (razao - RAZAO_INICIO) / (RAZAO_MAXIMA - RAZAO_INICIO);
+            case NIVEL_RIO -> (razao - 0.9) / 0.5;
+            case TEMPERATURA -> (valor - limite + 2) / 8;
+        };
+        severidade = limitar(severidade);
         return new Estimativa(severidade, descrever(tipo, valor, limite, mediaRecente));
     }
 

@@ -36,7 +36,7 @@ public class SimuladorSensoresService {
     // Episódios de pico em andamento: código do sensor -> leituras restantes e intensidade
     private final Map<String, Pico> picos = new ConcurrentHashMap<>();
 
-    record Pico(int restantes, double multiplicador) {
+    record Pico(int restantes, double intensidade) {
     }
 
     public SimuladorSensoresService(SensorRepository sensorRepository, LeituraService leituraService,
@@ -61,7 +61,7 @@ public class SimuladorSensoresService {
     public void forcarPico(String codigo) {
         Sensor sensor = sensorRepository.findByCodigoIgnoreCase(codigo)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Sensor não encontrado: " + codigo));
-        picos.put(sensor.getCodigo(), new Pico(6, 1.6 + random.nextDouble() * 0.5));
+        picos.put(sensor.getCodigo(), new Pico(6, 0.55 + random.nextDouble() * 0.35));
         leituraService.registrar(new NovaLeituraDTO(sensor.getCodigo(), gerarValor(sensor), null));
     }
 
@@ -69,17 +69,28 @@ public class SimuladorSensoresService {
         double limite = sensor.getLimiteAlerta();
         Pico pico = picos.get(sensor.getCodigo());
         if (pico == null && random.nextDouble() < chancePico) {
-            pico = new Pico(4 + random.nextInt(5), 1.15 + random.nextDouble() * 0.9);
+            pico = new Pico(4 + random.nextInt(5), random.nextDouble());
         }
         if (pico != null) {
             if (pico.restantes() <= 1) {
                 picos.remove(sensor.getCodigo());
             } else {
-                picos.put(sensor.getCodigo(), new Pico(pico.restantes() - 1, pico.multiplicador()));
+                picos.put(sensor.getCodigo(), new Pico(pico.restantes() - 1, pico.intensidade()));
             }
-            return arredondar(limite * pico.multiplicador() * (0.92 + random.nextDouble() * 0.16));
+            return arredondar(valorPico(sensor, limite, pico.intensidade()));
         }
         return arredondar(Math.max(0, normal(sensor, limite)));
+    }
+
+    // Valores de pico plausíveis para cada tipo (intensidade de 0 a 1, com pequena variação)
+    private double valorPico(Sensor sensor, double limite, double intensidade) {
+        double i = Math.max(0, Math.min(1, intensidade + (random.nextDouble() - 0.5) * 0.1));
+        return switch (sensor.getTipo()) {
+            case PLUVIOMETRO -> limite * (1.1 + 1.1 * i);
+            case NIVEL_RIO -> limite * (1.03 + 0.35 * i);
+            case TEMPERATURA -> limite + 0.5 + 6.5 * i;
+            case REDE_ELETRICA -> limite * (1.1 + 2.0 * i);
+        };
     }
 
     // Valores do dia a dia, abaixo do limite

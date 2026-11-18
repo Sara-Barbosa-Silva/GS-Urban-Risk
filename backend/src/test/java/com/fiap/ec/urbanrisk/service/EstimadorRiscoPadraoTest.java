@@ -19,6 +19,19 @@ class EstimadorRiscoPadraoTest {
     }
 
     @Test
+    void temperaturaUsaGrausAcimaDoLimite() {
+        assertEquals(0.25, estimador.estimar(TipoSensor.TEMPERATURA, 35, 35, 27).severidade(), 0.001);
+        assertEquals(1.0, estimador.estimar(TipoSensor.TEMPERATURA, 41, 35, 27).severidade(), 0.001);
+        assertEquals(0.0, estimador.estimar(TipoSensor.TEMPERATURA, 30, 35, 27).severidade(), 0.001);
+    }
+
+    @Test
+    void rioSensivelAPoucosCentimetros() {
+        assertEquals(0.2, estimador.estimar(TipoSensor.NIVEL_RIO, 3.5, 3.5, 1.9).severidade(), 0.001);
+        assertEquals(1.0, estimador.estimar(TipoSensor.NIVEL_RIO, 4.9, 3.5, 1.9).severidade(), 0.001);
+    }
+
+    @Test
     void descricaoEmLinguagemSimples() {
         String texto = estimador.estimar(TipoSensor.PLUVIOMETRO, 48, 30, 4).descricao();
         assertTrue(texto.startsWith("Chuva de 48,0 mm/h"));
