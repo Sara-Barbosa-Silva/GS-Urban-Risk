@@ -1,0 +1,1 @@
+export type TipoRisco = "ALAGAMENTO" | "ILHA_DE_CALOR" | "INTERRUPCAO_SERVICO";
