@@ -1,0 +1,10 @@
+import { StyleSheet } from "react-native";
+
+import { cores } from "./tema";
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: cores.fundo,
+  },
+});
