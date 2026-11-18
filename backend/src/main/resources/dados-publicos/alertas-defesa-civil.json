@@ -1,0 +1,56 @@
+{
+  "fonte": "Alertas no formato da Defesa Civil / CGE / INMET (dados SIMULADOS para a demonstração)",
+  "fonteReal": "Em produção: API de alertas da Defesa Civil SP, boletins do CGE (Centro de Gerenciamento de Emergências Climáticas) e avisos meteorológicos do INMET",
+  "alertas": [
+    {
+      "codigo": "DC-SP-2026-1187",
+      "orgao": "Defesa Civil SP",
+      "tipo": "ALAGAMENTO",
+      "bairro": "Jardim Pantanal",
+      "severidade": "ALTA",
+      "titulo": "Alerta de transbordamento do Rio Tietê no Jardim Pantanal",
+      "descricao": "Nível do Rio Tietê acima da cota de atenção. Evite as ruas próximas à várzea e mantenha documentos em local alto.",
+      "emitidoHaMinutos": 25
+    },
+    {
+      "codigo": "CGE-2026-0931",
+      "orgao": "CGE",
+      "tipo": "ALAGAMENTO",
+      "bairro": "Lapa",
+      "severidade": "MODERADA",
+      "titulo": "Estado de atenção para alagamentos na Lapa",
+      "descricao": "Núcleos de chuva sobre a zona oeste. Pontos de alagamento possíveis na região da Avenida Marquês de São Vicente.",
+      "emitidoHaMinutos": 40
+    },
+    {
+      "codigo": "INMET-2026-0552",
+      "orgao": "INMET",
+      "tipo": "ILHA_DE_CALOR",
+      "bairro": "Centro",
+      "severidade": "ALTA",
+      "titulo": "Aviso de onda de calor no Centro",
+      "descricao": "Temperaturas até 5 °C acima da média por 3 dias. Beba água, evite sol entre 10h e 16h e procure locais frescos.",
+      "emitidoHaMinutos": 90
+    },
+    {
+      "codigo": "CONC-ENERGIA-2026-0410",
+      "orgao": "Concessionária de energia",
+      "tipo": "INTERRUPCAO_SERVICO",
+      "bairro": "Itaim Paulista",
+      "severidade": "MODERADA",
+      "titulo": "Desligamento na rede elétrica no Itaim Paulista",
+      "descricao": "Falha em alimentador da rede. Previsão de restabelecimento em até 4 horas.",
+      "emitidoHaMinutos": 15
+    },
+    {
+      "codigo": "CONC-AGUA-2026-0207",
+      "orgao": "Companhia de saneamento",
+      "tipo": "INTERRUPCAO_SERVICO",
+      "bairro": "Vila Prudente",
+      "severidade": "BAIXA",
+      "titulo": "Manutenção programada na rede de água da Vila Prudente",
+      "descricao": "Abastecimento pode ficar irregular até as 18h por manutenção programada.",
+      "emitidoHaMinutos": 120
+    }
+  ]
+}
