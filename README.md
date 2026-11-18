@@ -20,6 +20,15 @@ Disciplina: **Advanced Programming And Mobile Dev** · Engenharia da Computaçã
 
 ---
 
+## Vídeo de demonstração
+
+- **Arquivo no repositório:** [`docs/video/demonstracao.mp4`](docs/video/demonstracao.mp4) (4 min 54 s, 1920x1080). Para assistir, abra o arquivo e clique em **View raw** ou baixe.
+- **YouTube:** https://youtu.be/XjnrkgQh5p0
+
+Mostra a API rodando (Swagger), o app no celular recebendo alertas em tempo real, o relato de morador com a confiança subindo, o backend parado com o app avisando que está offline e a reconexão automática.
+
+---
+
 ## Sumário
 
 1. [Arquitetura](#arquitetura)
@@ -96,7 +105,7 @@ flowchart LR
 │       ├── styles/       um *.styles.ts por tela/componente + tema
 │       ├── interfaces/ types/ utils/
 │       └── __tests__/
-├── docs/               api.http (todas as requisições) e prints do app
+├── docs/               api.http (todas as requisições), prints do app e vídeo de demonstração
 └── docker-compose.yml
 ```
 
