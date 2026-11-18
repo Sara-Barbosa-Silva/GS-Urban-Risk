@@ -1,0 +1,94 @@
+### Urban Risk Intelligence Platform - requisições da API
+### Use com a extensão REST Client (VS Code) ou o cliente HTTP do IntelliJ.
+
+@base = http://localhost:8080
+
+### Saúde do servidor (usado pelo app para reconectar)
+GET {{base}}/health
+
+### Actuator
+GET {{base}}/actuator/health
+
+### Alertas ativos ordenados por prioridade (maior primeiro)
+GET {{base}}/api/alertas
+
+### Só alagamentos
+GET {{base}}/api/alertas?tipo=ALAGAMENTO
+
+### Só críticos de uma região, paginado
+GET {{base}}/api/alertas?nivel=CRITICO&regiaoId=4&page=0&size=10
+
+### O que mudou desde um horário (inclui resolvidos, para o app remover da tela)
+GET {{base}}/api/alertas?desde=2026-11-19T12:00:00Z
+
+### Detalhe de um alerta
+GET {{base}}/api/alertas/1
+
+### Alerta inexistente -> 404 {"erro": "Alerta não encontrado."}
+GET {{base}}/api/alertas/999999
+
+### Todos os eventos, inclusive resolvidos
+GET {{base}}/api/eventos?status=RESOLVIDO
+
+### Agente local resolve um evento
+PATCH {{base}}/api/eventos/1/resolver
+
+### Painel (totais por nível e tipo, região mais crítica, últimas leituras)
+GET {{base}}/api/painel
+
+### Regiões e sensores
+GET {{base}}/api/regioes
+
+###
+GET {{base}}/api/sensores
+
+### Sensor envia uma leitura (acima do limite vira alerta)
+POST {{base}}/api/leituras
+Content-Type: application/json
+
+{
+  "codigoSensor": "PLU-02",
+  "valor": 48.5
+}
+
+### Leitura inválida -> 400
+POST {{base}}/api/leituras
+Content-Type: application/json
+
+{
+  "valor": 10
+}
+
+### Morador envia relato (sem nome; contato opcional vira hash e nunca volta na resposta)
+POST {{base}}/api/relatos
+Content-Type: application/json
+
+{
+  "tipoRisco": "ALAGAMENTO",
+  "regiaoId": 2,
+  "descricao": "Rua alagada perto do viaduto",
+  "contato": "(11) 98888-7777",
+  "latitude": -23.561234,
+  "longitude": -46.598765
+}
+
+### Relato inválido -> 400 {"erro": "Escolha a região."}
+POST {{base}}/api/relatos
+Content-Type: application/json
+
+{
+  "tipoRisco": "ALAGAMENTO"
+}
+
+### Outro morador confirma o relato (confiança +10)
+POST {{base}}/api/relatos/1/confirmar
+X-Dispositivo-Id: aparelho-do-vizinho-1
+
+### Lista relatos (sem dados pessoais)
+GET {{base}}/api/relatos
+
+### Importa a base pública simulada (idempotente)
+POST {{base}}/api/importacoes/base-publica
+
+### Força um pico no simulador para gerar alerta na hora
+POST {{base}}/api/simulador/pico/PLU-02
