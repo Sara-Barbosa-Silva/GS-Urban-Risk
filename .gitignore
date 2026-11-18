@@ -1,0 +1,29 @@
+# Backend
+backend/target/
+backend/data/
+*.db
+*.trace.db
+*.mv.db
+backend/.idea/
+*.iml
+backend/.vscode/
+
+# Mobile
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/web-build/
+mobile/expo-env.d.ts
+mobile/coverage/
+mobile/ios/
+mobile/android/
+mobile/.env*.local
+*.tsbuildinfo
+.metro-health-check*
+
+# Geral
+.DS_Store
+npm-debug.*
+yarn-error.*
+*.log
+.env
